@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>MyCampus - Course Registration</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">MyCampus</a>
+      </div>
+    </div>
+  </nav>
+
+<div class=container id="alert">
+
+</div>
+
+
+  <!-- Page Content -->
+    <div class="col-lg-3">
+
+      <ul class="nav nav-tabs" id="semesters">
+        <li class="active"><a data-toggle="tab" href="#fall" id="fallTab">Fall</a></li>
+        <li><a data-toggle="tab" href="#winter" id="winterTab">Winter</a></li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
+        <div id="fall" class="tab-pane fade in active">
+          <h3>FALL</h3>
+
+          <blockquote id="intro">
+            <p>To begin, select "Add" below</p>
+            <small>Thanks</small>
+          </blockquote>
+
+        </div>
+
+        <div id="winter" class="tab-pane fade">
+          <h3>WINTER</h3>
+
+          <blockquote id="intro">
+            <p>To begin, select "Add" below</p>
+            <small>Thanks</small>
+          </blockquote>
+
+        </div>
+        <div class="btn-group btn-group-justified">
+          <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addScreen">Add</a>
+          <a href="#" class="btn btn-default" id="recommend">Recommend</a>
+        </div>
+      </div>
+
+      <!-- /col-lg-4 -->
+    </div>
+
+
+  <!-- Modals -->
+  <div class="modal fade" id="addScreen" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add a Class</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+
+            <div class="form-group">
+              <label for="inputEmail" class="col-lg-2 control-label">Course Name</label>
+              <div class="col-lg-10">
+                <select class="form-control" id="courses">
+                  <option value=0>SOFE 3200U</option>
+                  <option value=1>CSCI 4250U</option>
+                  <option value=2>ENGR 4250U</option>
+                  <option value=3>SOFE 4100U</option>
+                  <option value=4>SOFE 4200U</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="select" class="col-lg-2 control-label">Colour</label>
+              <div class="col-lg-10">
+                <select class="form-control" id="colour">
+                  <option value=0>Red</option>
+                  <option value=1>Blue</option>
+                  <option value=2>Green</option>
+                  <option value=3>Yellow</option>
+                  <option value=4>Teal</option>
+                </select>
+                <br>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="add" class="btn btn-primary" data-dismiss="modal">Add</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="modal fade" id="submitScreen" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Confirm Submission</h4>
+        </div>
+        <div class="modal-body">
+          <p>You are about to enroll for the selected courses. You may wish to review your schedule before proceeding. Do you wish to submit your schedule?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="add" class="btn btn-primary" data-dismiss="modal">Yes</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="col-lg-8" id="calendar">
+    <div class="row">
+      <div class="container" style="margin-top:0; width: inherit;">
+        <h3 style="margin-top:0;">Week 1</h3>
+        <div class="col-md-2" style="padding-right: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Monday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="monContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Tuesday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="tueContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Wednesday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="wedContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Thursday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="thuContent"></div>
+          </div>
+        </div>
+        <div class="col-lg-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Friday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="friContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="container" style="width: inherit;">
+        <h3 style="margin-top:0;">Week 2</h3>
+        <div class="col-md-2" style="padding-right: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Monday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="monContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Tuesday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="tueContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Wednesday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="wedContent"></div>
+          </div>
+        </div>
+        <div class="col-md-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Thursday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="thuContent"></div>
+          </div>
+        </div>
+        <div class="col-lg-2" style="padding-right: 0; padding-left: 0;">
+          <div class="panel panel-default">
+            <div class="panel-heading">Friday</div>
+            <div class="panel-body" style="padding-bottom: 275px;" id="friContent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="container" style="width: inherit;">
+        <a href="#" class="btn btn-primary" id="save" style="margin-left:15px; margin-right:15px;">Save</a>
+        <a href="#" class="btn btn-default" id="undo" style="margin-right:15px;">Undo</a>
+        <a href="#" class="btn btn-default" id="contact" style="margin-right:15px;">Contact Us</a>
+        <a href="#" class="btn btn-info pull-right" data-toggle="modal" data-target="#submitScreen">Confirm and submit</a>
+      </div>
+    </div>
+
+  </br>
+</br>
+
+  </div>
+
+</body>
+
+</html>
+
+</div>
+<!-- /.container -->
+
+<!-- Bootstrap Core JavaScript -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/npm.js"></script>
+
+<script>
+  var maxCount = 10;
+  var currCount = 0;
+  var fallCount = 0;
+  var winCount = 0;
+  var classes = ["Ethics, Law and Professionalisim", "Embedded Systems", "Software and Computer Security", "Special Topics in Software Engineering", "Capstone Design II"];
+  var panels = ["danger", "primary", "success", "warning", "info"];
+
+  $(document).ready(function() {
+
+    $("#add").click(function() {
+      if (currCount < maxCount) {
+        $("blockquote").hide();
+        var $tab = $('#myTabContent'),
+          $active = $tab.find('.tab-pane.active');
+        var code = $('#courses option:selected').text();
+        var name = $('#courses').val();
+        var colour = $('#colour').val();
+
+        $active.append("<div class=\"panel panel-" + panels[colour] +
+          "\">\
+          <div class=\"panel-heading clearfix\" style=\"padding-bottom: 5px;\">\
+            <span class=\"glyphicon glyphicon-remove-circle pull-right\" id=\"rmv\" ></span>\
+            <h3 class=\"panel-title pull-left\" style=\"padding-top: 7.5px\">" +
+          code + "</h3>\
+          </div>\
+          <div class=\"panel-body\">\
+            " + classes[name] + "  <div class=\"checkbox\"><label><input type=\"checkbox\"> Show</label></div>\
+          </div>\
+        </div>");
+        currCount++;
+      }
+    });
+
+    $(document).on('click', '.glyphicon', function() {
+      $(this).closest("div.panel").remove();
+      currCount--;
+      if (currCount == 0) {
+        $("blockquote").show();
+      }
+    });
+
+  });
+
+  $("#save").click(function() {
+    $('#alert').append("<div class=\"alert alert-dismissible alert-success\">\
+        <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span class=\"glyphicon glyphicon-remove-circle pull-right\"></span></button>\
+        <p  style=\"text-align: center\"><strong>Your progress has been saved!</strong></p></div>");
+  });
+
+
+</script>
+
+</body>
+
+</html>
