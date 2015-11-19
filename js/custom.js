@@ -2,8 +2,10 @@ var maxCount = 10;
 var currCount = 0;
 var classes = ["Ethics, Law and Professionalisim", "Embedded Systems", "Capstone Design II", "Special Topics in Software Engineering", "Software and Computer Security"];
 var panels = ["danger", "warning", "primary", "success", "info"];
+var codes = ["SOFE 3200U", "CSCI 4250U", "ENGR 4250U", "SOFE 4100U", "SOFE 4200U"];
 var activeFall = [];
 var activeWinter = [];
+var lastAction;
 
 $(document).ready(function() {
 
@@ -16,7 +18,7 @@ $(document).ready(function() {
       var name = $('#courses').val();
 
       if ($activeTab.attr('id') == 'fall') {
-        if (activeFall.indexOf(name) == -1 && activeWinter.indexOf(name) == -1 ) {
+        if (activeFall.indexOf(name) == -1 && activeWinter.indexOf(name) == -1) {
           $activeTab.append("<div class=\"panel panel-" + panels[name] +
             "\" id=" + name +
             ">\
@@ -36,6 +38,7 @@ $(document).ready(function() {
           }
           console.log(activeFall);
           showClasses(name);
+          lastAction = "addF-" + name;
 
 
         } else {
@@ -47,7 +50,7 @@ $(document).ready(function() {
         }
       }
       if ($activeTab.attr('id') == 'winter') {
-        if (activeWinter.indexOf(name) == -1 && activeFall.indexOf(name) == -1 ) {
+        if (activeWinter.indexOf(name) == -1 && activeFall.indexOf(name) == -1) {
           $activeTab.append("<div class=\"panel panel-" + panels[name] +
             "\" id=" + name +
             ">\
@@ -65,6 +68,7 @@ $(document).ready(function() {
           activeWinter.push(name);
           console.log(activeWinter);
           showClasses(name);
+          lastAction = "addW-" + name;
 
 
         } else {
@@ -82,26 +86,24 @@ $(document).ready(function() {
   $(document).on('click', '.glyphicon-remove-circle', function() {
     var $tab = $('#myTabContent'),
       $activeTab = $tab.find('.tab-pane.active');
-      pop = $(this).closest("div.panel").attr('id');
-    if($activeTab.attr('id')=='fall'){
+    pop = $(this).closest("div.panel").attr('id');
+    if ($activeTab.attr('id') == 'fall') {
       index = activeFall.indexOf(pop);
       if (index > -1) {
         activeFall.splice(index, 1);
         hideClasses(pop);
         $(this).closest("div.panel").remove();
+        lastAction = "rmv-" + pop;
       }
     }
-    if($activeTab.attr('id')=='winter'){
+    if ($activeTab.attr('id') == 'winter') {
       if (index > -1) {
         activeWinter.splice(index, 1);
         hideClasses(pop);
         $(this).closest("div.panel").remove();
+        lastAction = "rmv-" + pop;
       }
     }
-
-
-
-
     currCount--;
     if (currCount == 0) {
       $("blockquote").show();
@@ -150,6 +152,7 @@ $("#recommend").click(function() {
           <a href=\"#\" class=\"btn btn-default btn-sm pull-right\" style=\"margin-left:10px; margin-right:15px;\" onclick=\"hidePathFall();\" data-dismiss=\"alert\">No thanks!</a>\
           <a href=\"#\" class=\"btn btn-primary btn-sm pull-right\" style=\"margin-left:15px; margin-right:10px;\" data-dismiss=\"alert\">Yes</a>\
            </div>");
+    lastAction = "recommendFall";
   }
   if ($activeTab.attr('id') == 'winter') {
     showPathWinter();
@@ -159,6 +162,7 @@ $("#recommend").click(function() {
           <a href=\"#\" class=\"btn btn-default btn-sm pull-right\" style=\"margin-left:10px; margin-right:15px;\" onclick=\"hidePathWinter();\" data-dismiss=\"alert\">No thanks!</a>\
           <a href=\"#\" class=\"btn btn-primary btn-sm pull-right\" style=\"margin-left:15px; margin-right:10px;\" data-dismiss=\"alert\">Yes</a>\
            </div>");
+    lastAction = "recommendWinter";
   }
 
 
@@ -188,6 +192,15 @@ $("#fallTab").click(function() {
       hideClasses(activeWinter[i]);
     }
   }
+});
+
+$("#undo").click(function() {
+  undo(lastAction);
+  $('#alert').append(
+    "<div class=\"alert alert-dismissible alert-success\">\
+      <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span class=\"glyphicon glyphicon-remove-circle pull-right\"></span></button>\
+      <p  style=\"text-align: center\"><strong>Your progress has been saved!</strong></p></div>"
+  );
 });
 
 function showClasses(name) {
@@ -379,6 +392,94 @@ function hidePathWinter() {
     $("#4labA").css("visibility", "visible");
   }
 };
-function undo() {
+
+function undo(temp) {
+  var tokens = temp.split("-");
+  switch (tokens[0]) {
+    case 'addF':
+      console.log(temp);
+      $('#' + tokens[1]).remove();
+      index = activeFall.indexOf(tokens[1]);
+      activeFall.splice(index, 1);
+      hideClasses(tokens[1]);
+      currCount--;
+      if (currCount == 0) {
+        $("blockquote").show();
+      }
+      console.log(activeFall);
+      lastAction = "";
+      break;
+    case 'addW':
+      console.log(temp);
+      $('#' + tokens[1]).remove();
+      index = activeWinter.indexOf(tokens[1]);
+      activeWinter.splice(index, 1);
+      hideClasses(tokens[1]);
+      currCount--;
+      if (currCount == 0) {
+        $("blockquote").show();
+      }
+      console.log(activeFall);
+      lastAction = "";
+      break;
+    case 'rmv':
+      console.log(temp);
+      var $tab = $('#myTabContent'),
+        $activeTab = $tab.find('.tab-pane.active');
+      name = tokens[1];
+      if ($activeTab.attr('id') == 'fall') {
+        $activeTab.append("<div class=\"panel panel-" + panels[name] +
+          "\" id=" + name +
+          ">\
+          <div class=\"panel-heading clearfix\" style=\"padding-bottom: 5px;\">\
+            <span class=\"glyphicon glyphicon-remove-circle pull-right\" id=\"rmv\" ></span>\
+            <h3 class=\"panel-title pull-left\" style=\"padding-top: 7.5px\">" +
+          codes[name] + "</h3>\
+          </div>\
+          <div class=\"panel-body\">\
+            " + classes[name] + "  <div class=\"checkbox\"><label><input type=\"checkbox\" checked=\"checked\"  id=" + name +
+          "show\"> Show</label></div>\
+          </div>\
+        </div>");
+        currCount++;
+        if ($activeTab.attr('id') == 'fall') {
+          activeFall.push(name);
+        }
+        console.log(activeFall);
+        showClasses(name);
+        lastAction = ""
+      }
+      if ($activeTab.attr('id') == 'winter') {
+        $activeTab.append("<div class=\"panel panel-" + panels[name] +
+          "\" id=" + name +
+          ">\
+          <div class=\"panel-heading clearfix\" style=\"padding-bottom: 5px;\">\
+            <span class=\"glyphicon glyphicon-remove-circle pull-right\" id=\"rmv\" ></span>\
+            <h3 class=\"panel-title pull-left\" style=\"padding-top: 7.5px\">" +
+          codes[name] + "</h3>\
+          </div>\
+          <div class=\"panel-body\">\
+            " + classes[name] + "  <div class=\"checkbox\"><label><input type=\"checkbox\" checked=\"checked\"  id=" + name +
+          "show\"> Show</label></div>\
+          </div>\
+        </div>");
+        currCount++;
+        if ($activeTab.attr('id') == 'fall') {
+          activeWinter.push(name);
+        }
+        console.log(activeWinter);
+        showClasses(name);
+        lastAction = ""
+      }
+      break;
+    case 'recommendFall':
+      hidePathFall();
+      break;
+    case 'recommendWinter':
+      hidePathWinter();
+      break;
+
+  }
+
 
 }
